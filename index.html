@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Obsidian Ventures deploys autonomous trading bots, intelligent AI stacks, and signal intelligence systems for crypto operators who want an edge." />
+  <title>Obsidian Ventures — AI systems for serious operators.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0a0a0a;
+      --bg-card: #111111;
+      --border: #222222;
+      --text: #f0f0f0;
+      --text-muted: #888888;
+      --purple: #7c3aed;
+      --gold: #d97706;
+      --gradient: linear-gradient(135deg, #7c3aed, #d97706);
+      --gradient-hover: linear-gradient(135deg, #6d28d9, #b45309);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2rem;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(34, 34, 34, 0.5);
+    }
+
+    .nav-logo {
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-cta {
+      display: inline-block;
+      padding: 0.5rem 1.25rem;
+      background: var(--gradient);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .nav-cta:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 1.5rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 600px;
+      background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -10%;
+      right: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(ellipse at center, rgba(217, 119, 6, 0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      max-width: 900px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .hero h1 span {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: #aaaaaa;
+      max-width: 680px;
+      margin: 0 auto 1.25rem;
+      font-weight: 400;
+      line-height: 1.7;
+    }
+
+    .hero-support {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      font-style: italic;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 0.9rem 2.25rem;
+      background: var(--gradient);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(124, 58, 237, 0.45);
+    }
+
+    /* ── TRUST BAR ── */
+    .trust-bar {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      text-align: center;
+    }
+
+    .trust-stat {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 600px;
+    }
+
+    .trust-stat strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .trust-built-on {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .trust-built-on span {
+      padding: 0.3rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      background: rgba(255,255,255,0.02);
+      color: #cccccc;
+      transition: border-color 0.2s;
+    }
+
+    .trust-built-on span:hover {
+      border-color: #444;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 6rem 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 520px;
+      margin-bottom: 3.5rem;
+      line-height: 1.7;
+    }
+
+    /* ── CARDS ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gradient);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .card:hover {
+      border-color: #333;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.02em;
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.25rem;
+      line-height: 1.6;
+    }
+
+    .card-price {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 0.35rem 0.85rem;
+      background: rgba(124, 58, 237, 0.12);
+      border: 1px solid rgba(124, 58, 237, 0.25);
+      border-radius: 100px;
+      color: #c4b5fd;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      counter-reset: steps;
+    }
+
+    .step {
+      position: relative;
+      padding-left: 3.5rem;
+    }
+
+    .step::before {
+      counter-increment: steps;
+      content: counter(steps);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 2.2rem;
+      height: 2.2rem;
+      background: var(--gradient);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .step-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.01em;
+    }
+
+    .step-desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* ── DIVIDER ── */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 1.5rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 5rem 1.5rem 3rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-headline {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.75rem;
+    }
+
+    .footer-headline span {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .footer-meta {
+      margin-top: 3rem;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fade-up-delay-1 { transition-delay: 0.1s; }
+    .fade-up-delay-2 { transition-delay: 0.2s; }
+    .fade-up-delay-3 { transition-delay: 0.3s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      nav {
+        padding: 1rem 1.25rem;
+      }
+
+      .hero {
+        padding: 7rem 1.25rem 4rem;
+      }
+
+      .trust-bar {
+        padding: 1.25rem 1.25rem;
+      }
+
+      section {
+        padding: 4rem 1.25rem;
+      }
+
+      .step {
+        padding-left: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Obsidian Ventures</div>
+    <a href="mailto:sean@obsidianventures.xyz" class="nav-cta">Book a Call</a>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-eyebrow">obsidianventures.xyz</div>
+    <h1>We Build the AI That <span>Trades While You Sleep.</span></h1>
+    <p class="hero-sub">Obsidian Ventures deploys autonomous trading bots, intelligent AI stacks, and signal intelligence systems for crypto operators who want an edge — not a prototype.</p>
+    <p class="hero-support">"Our systems run in live production. We've already broken them so you don't have to."</p>
+    <a href="mailto:sean@obsidianventures.xyz" class="btn-primary">Book a Discovery Call</a>
+  </header>
+
+  <!-- TRUST BAR -->
+  <div class="trust-bar">
+    <p class="trust-stat">
+      <strong>"14 of the top 20 most profitable Polymarket traders are bots."</strong>
+      &nbsp;— Finance Magnates, March 2026
+    </p>
+    <div class="trust-built-on">
+      <span>Built on</span>
+      <span>Polymarket</span>
+      <span>Claude (Anthropic)</span>
+      <span>Python</span>
+      <span>On-chain</span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <p class="section-label fade-up">What We Build</p>
+    <h2 class="section-title fade-up fade-up-delay-1">Systems. Not Demos.</h2>
+    <p class="section-desc fade-up fade-up-delay-2">Every engagement ends with working infrastructure in your hands — not a slide deck.</p>
+    <div class="cards-grid">
+      <div class="card fade-up fade-up-delay-1">
+        <span class="card-icon">🤖</span>
+        <h3 class="card-title">Polymarket Bot Setup</h3>
+        <p class="card-desc">Automate Your Polymarket Edge. A fully autonomous prediction market bot — calibrated, deployed, and handed off to you.</p>
+        <span class="card-price">From $1,500</span>
+      </div>
+      <div class="card fade-up fade-up-delay-2">
+        <span class="card-icon">⚡</span>
+        <h3 class="card-title">OpenClaw / Claude AI Stack</h3>
+        <p class="card-desc">Your AI Ops Layer. Production-Ready. An end-to-end AI operations layer — from data ingestion to automated decisions.</p>
+        <span class="card-price">From $2,500</span>
+      </div>
+      <div class="card fade-up fade-up-delay-3">
+        <span class="card-icon">📡</span>
+        <h3 class="card-title">Signal Intelligence Brief</h3>
+        <p class="card-desc">The Weekly Brief That Keeps You Ahead. Curated market signals, on-chain alpha, and AI-parsed intelligence delivered weekly.</p>
+        <span class="card-price">From $299/month</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- HOW IT WORKS -->
+  <section id="how-it-works">
+    <p class="section-label fade-up">The Process</p>
+    <h2 class="section-title fade-up fade-up-delay-1">How It Works</h2>
+    <p class="section-desc fade-up fade-up-delay-2">Fast, direct, operator-to-operator. No bloat, no overhead.</p>
+    <div class="steps">
+      <div class="step fade-up fade-up-delay-1">
+        <h3 class="step-title">Discovery Call</h3>
+        <p class="step-desc">30 minutes. We understand your setup, objectives, and what edge you're trying to automate.</p>
+      </div>
+      <div class="step fade-up fade-up-delay-2">
+        <h3 class="step-title">Build &amp; Deploy</h3>
+        <p class="step-desc">1–3 weeks. We build, test in a live environment, and battle-harden the system before handoff.</p>
+      </div>
+      <div class="step fade-up fade-up-delay-3">
+        <h3 class="step-title">Handoff &amp; Support</h3>
+        <p class="step-desc">You own it. Full documentation, clean code, and ongoing support to keep it running sharp.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contact">
+    <h2 class="footer-headline fade-up">Ready to <span>automate your edge?</span></h2>
+    <a href="mailto:sean@obsidianventures.xyz" class="btn-primary fade-up fade-up-delay-1">Book a 30-Min Discovery Call →</a>
+    <p class="footer-meta">Obsidian Ventures — AI systems for serious operators. &copy; 2026</p>
+  </footer>
+
+  <script>
+    // Intersection Observer for scroll-in animations
+    const fadeEls = document.querySelectorAll('.fade-up');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    fadeEls.forEach((el) => observer.observe(el));
+
+    // Immediately show hero elements (already in view)
+    document.querySelectorAll('.hero .fade-up, .hero-eyebrow').forEach((el) => {
+      setTimeout(() => el.classList.add('visible'), 100);
+    });
+  </script>
+
+</body>
+</html>

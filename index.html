@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Obsidian — Decision Intelligence</title>
-  <meta name="description" content="Autonomous AI systems for institutional decision-making. We process signal where others see noise." />
+  <title>Obsidian Ventures — Prediction Market Hedge Fund</title>
+  <meta name="description" content="AI-powered prediction market hedge fund. 11 autonomous strategies running 24/7." />
   <meta name="robots" content="index, follow" />
-  <meta name="keywords" content="decision intelligence, AI forecasting, autonomous agents, financial intelligence" />
-  <meta name="author" content="Obsidian" />
+  <meta name="keywords" content="prediction markets, hedge fund, AI trading, autonomous strategies, Polymarket, Kalshi" />
+  <meta name="author" content="Obsidian Ventures" />
   <link rel="canonical" href="https://obsidianventures.xyz" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://obsidianventures.xyz" />
-  <meta property="og:title" content="Obsidian — Decision Intelligence" />
-  <meta property="og:description" content="Autonomous AI systems for institutional decision-making. Financial, geopolitical, and environmental intelligence in real time." />
+  <meta property="og:title" content="Obsidian Ventures — Prediction Market Hedge Fund" />
+  <meta property="og:description" content="AI-powered prediction market hedge fund. 11 autonomous strategies running 24/7." />
   <meta property="og:image" content="https://obsidianventures.xyz/og.png" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Obsidian — Decision Intelligence" />
-  <meta name="twitter:description" content="Autonomous AI systems for institutional decision-making." />
+  <meta name="twitter:title" content="Obsidian Ventures — Prediction Market Hedge Fund" />
+  <meta name="twitter:description" content="AI-powered prediction market hedge fund. 11 autonomous strategies running 24/7." />
 
   <!-- Favicon — diamond shard mark as inline SVG data URI -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 44' fill='none'%3E%3Crect width='40' height='44' fill='%2308080c'/%3E%3Cpolygon points='20,2 38,14 32,42 8,42 2,14' fill='none' stroke='%23c8a96e' stroke-width='1.5' stroke-linejoin='round'/%3E%3Cpolygon points='20,2 2,14 8,42 20,28' fill='rgba(200,169,110,0.06)' stroke='%23c8a96e' stroke-width='0.75' stroke-linejoin='round'/%3E%3Cpolygon points='20,2 38,14 32,42 20,28' fill='rgba(200,169,110,0.12)' stroke='%23c8a96e' stroke-width='0.75' stroke-linejoin='round'/%3E%3C/svg%3E" />
@@ -187,12 +187,12 @@
     }
 
     .hero-headline {
-      font-size: clamp(36px, 5vw, 62px);
+      font-size: clamp(32px, 5vw, 58px);
       font-weight: 300;
       line-height: 1.15;
       letter-spacing: -0.01em;
       color: var(--text);
-      max-width: 720px;
+      max-width: 760px;
       margin: 0 auto 28px;
     }
 
@@ -203,6 +203,11 @@
       max-width: 520px;
       margin: 0 auto 48px;
       line-height: 1.7;
+    }
+
+    .hero-sub strong {
+      color: var(--gold);
+      font-weight: 500;
     }
 
     .btn-outline {
@@ -233,41 +238,98 @@
       margin: 0 auto;
     }
 
-    /* ── Capabilities ── */
-    #capabilities .cards {
+    /* ── Live Stats ── */
+    #live-stats {
+      padding: 80px 48px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 40px 32px;
+      text-align: center;
+      transition: border-color 0.25s ease;
+    }
+
+    .stat-card:hover {
+      border-color: rgba(200, 169, 110, 0.35);
+    }
+
+    .stat-value {
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 300;
+      color: var(--gold);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-sec);
+    }
+
+    /* ── Strategy Stack ── */
+    #strategies .strategy-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 2px;
-      margin-top: 0;
     }
 
-    .cap-card {
+    .strategy-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-left: 2px solid transparent;
-      padding: 40px 36px;
+      padding: 32px 28px;
       transition: border-left-color 0.25s ease, background 0.25s ease;
     }
 
-    .cap-card:hover {
+    .strategy-card:hover {
       border-left-color: var(--gold);
       background: #111118;
     }
 
-    .cap-title {
-      font-size: 12px;
+    .strategy-tag {
+      font-size: 10px;
       font-weight: 600;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--text);
-      margin-bottom: 20px;
+      color: var(--gold);
+      opacity: 0.7;
+      margin-bottom: 10px;
     }
 
-    .cap-body {
-      font-size: 14px;
-      font-weight: 300;
-      color: var(--text-sec);
-      line-height: 1.75;
+    .strategy-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: 0.04em;
+      line-height: 1.4;
+    }
+
+    .strategy-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: #2ecc71;
+      border-radius: 50%;
+      margin-right: 8px;
+      box-shadow: 0 0 6px rgba(46, 204, 113, 0.6);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
     }
 
     /* ── Architecture ── */
@@ -325,26 +387,26 @@
       max-width: 580px;
     }
 
-    /* ── Infrastructure ── */
-    #infrastructure {
+    /* ── Technology ── */
+    #technology {
       text-align: center;
     }
 
-    #infrastructure .infra-line {
+    #technology .tech-line {
       font-size: 15px;
       font-weight: 300;
       color: var(--text-sec);
       margin-bottom: 56px;
     }
 
-    .infra-badges {
+    .tech-badges {
       display: flex;
       gap: 12px;
       justify-content: center;
       flex-wrap: wrap;
     }
 
-    .infra-badge {
+    .tech-badge {
       padding: 10px 22px;
       border: 1px solid var(--border);
       font-size: 11px;
@@ -353,6 +415,17 @@
       text-transform: uppercase;
       color: var(--text-sec);
       border-radius: 2px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .tech-badge:hover {
+      border-color: rgba(200, 169, 110, 0.35);
+      color: var(--text);
+    }
+
+    .tech-badge.primary {
+      border-color: rgba(200, 169, 110, 0.4);
+      color: var(--gold);
     }
 
     /* ── Contact ── */
@@ -484,7 +557,15 @@
         padding: 100px 24px 80px;
       }
 
-      #capabilities .cards {
+      #live-stats {
+        padding: 60px 24px;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      #strategies .strategy-grid {
         grid-template-columns: 1fr;
         gap: 1px;
       }
@@ -503,8 +584,22 @@
         font-size: 28px;
       }
 
-      .infra-badges {
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      #strategies .strategy-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tech-badges {
         gap: 8px;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      #strategies .strategy-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
@@ -526,9 +621,9 @@
       <span class="nav-wordmark">Obsidian</span>
     </a>
     <ul class="nav-links">
-      <li><a href="#capabilities">Capabilities</a></li>
+      <li><a href="#strategies">Strategies</a></li>
       <li><a href="#architecture">Architecture</a></li>
-      <li><a href="#infrastructure">Infrastructure</a></li>
+      <li><a href="#technology">Technology</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
@@ -548,27 +643,81 @@
           <span class="hero-wordmark">Obsidian</span>
         </div>
         <div class="hero-rule"></div>
-        <h1 class="hero-headline">Intelligence at the edge of uncertainty.</h1>
-        <p class="hero-sub">Autonomous AI systems for institutional decision-making. We process signal where others see noise.</p>
+        <h1 class="hero-headline">AI-powered prediction market hedge fund.</h1>
+        <p class="hero-sub"><strong>11 autonomous strategies</strong> running 24/7. Finding the outcomes the crowd has mispriced — and trading that gap.</p>
         <a href="#contact" class="btn-outline">— Request Access —</a>
       </div>
     </section>
 
-    <!-- Capabilities -->
-    <section id="capabilities">
-      <p class="section-label reveal">— Capabilities —</p>
-      <div class="cards">
-        <div class="cap-card reveal">
-          <h3 class="cap-title">Financial Intelligence</h3>
-          <p class="cap-body">Systematic analysis of derivatives markets, macro flows, and cross-asset correlations. We identify structural edge before it reaches consensus.</p>
+    <!-- Live Stats -->
+    <section id="live-stats">
+      <div class="stats-grid">
+        <div class="stat-card reveal">
+          <div class="stat-value">11</div>
+          <div class="stat-label">Strategies Running</div>
         </div>
-        <div class="cap-card reveal">
-          <h3 class="cap-title">Geopolitical Risk</h3>
-          <p class="cap-body">Multi-source synthesis across news, logistics, and intelligence signals. Probabilistic risk assessment for complex geopolitical scenarios.</p>
+        <div class="stat-card reveal">
+          <div class="stat-value">50+</div>
+          <div class="stat-label">Trades Executed</div>
         </div>
-        <div class="cap-card reveal">
-          <h3 class="cap-title">Environmental Forecasting</h3>
-          <p class="cap-body">High-frequency atmospheric and climate modelling for event-driven positioning. Forecast precision where it matters.</p>
+        <div class="stat-card reveal">
+          <div class="stat-value">96%</div>
+          <div class="stat-label">Win Rate</div>
+        </div>
+        <div class="stat-card reveal">
+          <div class="stat-value">$200+</div>
+          <div class="stat-label">Capital Deployed</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Strategy Stack -->
+    <section id="strategies">
+      <p class="section-label reveal">— Strategy Stack —</p>
+      <div class="strategy-grid">
+        <div class="strategy-card reveal">
+          <div class="strategy-tag">Near-Certainty</div>
+          <div class="strategy-name"><span class="strategy-dot"></span>Near-Certainty Scanner</div>
+        </div>
+        <div class="strategy-card reveal">
+          <div class="strategy-tag">Wallet Mirroring</div>
+          <div class="strategy-name"><span class="strategy-dot"></span>APEX Wallet Mirror <span style="color:var(--text-sec);font-size:11px;">35 wallets</span></div>
+        </div>
+        <div class="strategy-card reveal">
+          <div class="strategy-tag">Arbitrage</div>
+          <div class="strategy-name"><span class="strategy-dot"></span>Kalshi Combos Arb</div>
+        </div>
+        <div class="strategy-card reveal">
+          <div class="strategy-tag">Arbitrage</div>
+          <div class="strategy-name"><span class="strategy-dot"></span>Thematic Cluster Arb</div>
+        </div>
+        <div class="strategy-card reveal">
+          <div class="strategy-tag">Bias Exploit</div>
+          <div class="strategy-name"><span class="strategy-dot"></span>Polymarket Bias <span style="color:var(--text-sec);font-size:11px;">Longshot NO</span></div>
+        </div>
+        <div class="strategy-card reveal">
+          <div class="strategy-tag">Market Making</div>
+          <div class="strategy-name"><span class="strategy-dot"></span>Market Maker</div>
+        </div>
+        <div class="strategy-card reveal">
+          <div class="strategy-tag">Event-Driven</div>
+          <div class="strategy-name"><span class="strategy-dot"></span>NBA Injury Scanner</div>
+        </div>
+        <div class="strategy-card reveal">
+          <div class="strategy-tag">Statistical</div>
+          <div class="strategy-name"><span class="strategy-dot"></span>Pairs Trading</div>
+        </div>
+        <div class="strategy-card reveal">
+          <div class="strategy-tag">Statistical</div>
+          <div class="strategy-name"><span class="strategy-dot"></span>Mean Reversion</div>
+        </div>
+        <div class="strategy-card reveal">
+          <div class="strategy-tag">Composite</div>
+          <div class="strategy-name"><span class="strategy-dot"></span>Alpha Combo</div>
+        </div>
+        <div class="strategy-card reveal">
+          <div class="strategy-tag">Esports</div>
+          <div class="strategy-name"><span class="strategy-dot"></span>Dota2 Esports</div>
         </div>
       </div>
     </section>
@@ -576,48 +725,50 @@
     <!-- Architecture -->
     <section id="architecture">
       <p class="section-label reveal">— Architecture —</p>
-      <h2 class="arch-headline reveal">A system that improves with every outcome.</h2>
+      <h2 class="arch-headline reveal">A system that improves with every resolved market.</h2>
       <ol class="arch-list">
         <li class="arch-item reveal">
           <span class="arch-num">01</span>
           <div class="arch-content">
-            <div class="arch-title">Multi-Model Ensemble</div>
-            <p class="arch-desc">No single model is trusted. Multiple frontier architectures — including systems from Meta, DeepSeek, and NVIDIA — run in parallel. Their disagreement becomes signal.</p>
+            <div class="arch-title">Causal Signal Sourcing</div>
+            <p class="arch-desc">We start at the oracle — the exact data source that resolves each market — and work backwards to the causal inputs. Raw station data over summaries. Physics over forecasts.</p>
           </div>
         </li>
         <li class="arch-item reveal">
           <span class="arch-num">02</span>
           <div class="arch-content">
             <div class="arch-title">Autonomous Execution</div>
-            <p class="arch-desc">Agents act when thresholds are crossed. The latency between insight and action is measured in milliseconds.</p>
+            <p class="arch-desc">Strategies run continuously. Agents enter positions when thresholds are crossed, manage risk, and redeploy capital without human intervention.</p>
           </div>
         </li>
         <li class="arch-item reveal">
           <span class="arch-num">03</span>
           <div class="arch-content">
-            <div class="arch-title">Continuous Calibration</div>
-            <p class="arch-desc">Every prediction resolves against reality. Parameters update. The system becomes more accurate over time, automatically.</p>
+            <div class="arch-title">Self-Improving Loop</div>
+            <p class="arch-desc">Every resolved market feeds back into the system. Parameters update, edge is re-measured, and underperforming strategies are flagged for replacement.</p>
           </div>
         </li>
         <li class="arch-item reveal">
           <span class="arch-num">04</span>
           <div class="arch-content">
-            <div class="arch-title">Live Signal Ingestion</div>
-            <p class="arch-desc">Twenty-plus data sources: financial APIs, satellite feeds, vessel tracking, geopolitical intelligence, atmospheric stations — processed continuously.</p>
+            <div class="arch-title">Multi-Market Coverage</div>
+            <p class="arch-desc">Polymarket, Kalshi, and esports books. Sports, finance, geopolitics, weather — anywhere the crowd misprices structured outcomes.</p>
           </div>
         </li>
       </ol>
     </section>
 
-    <!-- Infrastructure -->
-    <section id="infrastructure">
-      <p class="section-label reveal">— Infrastructure —</p>
-      <p class="infra-line reveal">Built on enterprise-grade AI infrastructure.</p>
-      <div class="infra-badges reveal">
-        <span class="infra-badge">NVIDIA NIM</span>
-        <span class="infra-badge">Amazon Web Services</span>
-        <span class="infra-badge">Google Cloud</span>
-        <span class="infra-badge">Microsoft Azure</span>
+    <!-- Technology -->
+    <section id="technology">
+      <p class="section-label reveal">— Technology —</p>
+      <p class="tech-line reveal">Built on frontier AI infrastructure, running continuously.</p>
+      <div class="tech-badges reveal">
+        <span class="tech-badge primary">Claude Sonnet 4.6</span>
+        <span class="tech-badge primary">Gemini Flash</span>
+        <span class="tech-badge primary">OpenClaw</span>
+        <span class="tech-badge">Polymarket API</span>
+        <span class="tech-badge">Kalshi API</span>
+        <span class="tech-badge">Autonomous Agents</span>
       </div>
     </section>
 
@@ -654,7 +805,7 @@
 
   <!-- Footer -->
   <footer>
-    <span class="footer-brand">Obsidian</span>
+    <span class="footer-brand">Obsidian Ventures</span>
     <span class="footer-copy">© 2026</span>
   </footer>
 

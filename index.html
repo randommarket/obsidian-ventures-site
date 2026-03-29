@@ -1,900 +1,470 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Obsidian Ventures — Prediction Market Hedge Fund</title>
-  <meta name="description" content="AI-powered prediction market hedge fund. 11 autonomous strategies running 24/7." />
-  <meta name="robots" content="index, follow" />
-  <meta name="keywords" content="prediction markets, hedge fund, AI trading, autonomous strategies, Polymarket, Kalshi" />
-  <meta name="author" content="Obsidian Ventures" />
-  <link rel="canonical" href="https://obsidianventures.xyz" />
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://obsidianventures.xyz" />
-  <meta property="og:title" content="Obsidian Ventures — Prediction Market Hedge Fund" />
-  <meta property="og:description" content="AI-powered prediction market hedge fund. 11 autonomous strategies running 24/7." />
-  <meta property="og:image" content="https://obsidianventures.xyz/og.png" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Obsidian Ventures — Prediction Market Hedge Fund" />
-  <meta name="twitter:description" content="AI-powered prediction market hedge fund. 11 autonomous strategies running 24/7." />
-
-  <!-- Favicon — diamond shard mark as inline SVG data URI -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 44' fill='none'%3E%3Crect width='40' height='44' fill='%2308080c'/%3E%3Cpolygon points='20,2 38,14 32,42 8,42 2,14' fill='none' stroke='%23c8a96e' stroke-width='1.5' stroke-linejoin='round'/%3E%3Cpolygon points='20,2 2,14 8,42 20,28' fill='rgba(200,169,110,0.06)' stroke='%23c8a96e' stroke-width='0.75' stroke-linejoin='round'/%3E%3Cpolygon points='20,2 38,14 32,42 20,28' fill='rgba(200,169,110,0.12)' stroke='%23c8a96e' stroke-width='0.75' stroke-linejoin='round'/%3E%3C/svg%3E" />
-  <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 44' fill='none'%3E%3Crect width='40' height='44' fill='%2308080c'/%3E%3Cpolygon points='20,2 38,14 32,42 8,42 2,14' fill='none' stroke='%23c8a96e' stroke-width='1.5' stroke-linejoin='round'/%3E%3Cpolygon points='20,2 2,14 8,42 20,28' fill='rgba(200,169,110,0.06)' stroke='%23c8a96e' stroke-width='0.75' stroke-linejoin='round'/%3E%3Cpolygon points='20,2 38,14 32,42 20,28' fill='rgba(200,169,110,0.12)' stroke='%23c8a96e' stroke-width='0.75' stroke-linejoin='round'/%3E%3C/svg%3E" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --bg:           #08080c;
-      --surface:      #0f0f14;
-      --gold:         #c8a96e;
-      --gold-dim:     rgba(200, 169, 110, 0.15);
-      --gold-faint:   rgba(200, 169, 110, 0.06);
-      --steel:        #4a7c9e;
-      --text:         #e8e8e4;
-      --text-sec:     #6b6b72;
-      --border:       rgba(200, 169, 110, 0.15);
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      font-weight: 400;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-
-    /* ── Canvas background ── */
-    #dot-grid {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    /* ── Nav ── */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 48px;
-      height: 64px;
-      transition: border-bottom 0.3s ease;
-    }
-
-    nav.scrolled {
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-    }
-
-    .nav-wordmark {
-      color: var(--text);
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 40px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: var(--text-sec);
-      text-decoration: none;
-      font-size: 12px;
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover {
-      color: var(--gold);
-    }
-
-    /* ── Main content wrapper ── */
-    main {
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ── Section labels ── */
-    .section-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 48px;
-    }
-
-    /* ── Scroll reveal ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ── Hero ── */
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 120px 48px 100px;
-    }
-
-    .hero-logo {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 28px;
-    }
-
-    .hero-wordmark {
-      font-size: 15px;
-      font-weight: 300;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--text);
-    }
-
-    .hero-rule {
-      width: 48px;
-      height: 1px;
-      background: var(--gold);
-      margin: 0 auto 36px;
-      opacity: 0.6;
-    }
-
-    .hero-headline {
-      font-size: clamp(32px, 5vw, 58px);
-      font-weight: 300;
-      line-height: 1.15;
-      letter-spacing: -0.01em;
-      color: var(--text);
-      max-width: 760px;
-      margin: 0 auto 28px;
-    }
-
-    .hero-sub {
-      font-size: 16px;
-      font-weight: 400;
-      color: var(--text-sec);
-      max-width: 520px;
-      margin: 0 auto 48px;
-      line-height: 1.7;
-    }
-
-    .hero-sub strong {
-      color: var(--gold);
-      font-weight: 500;
-    }
-
-    .btn-outline {
-      display: inline-block;
-      padding: 12px 32px;
-      border: 1px solid var(--gold);
-      color: var(--gold);
-      background: transparent;
-      font-family: 'Inter', sans-serif;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      text-decoration: none;
-      cursor: pointer;
-      border-radius: 2px;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .btn-outline:hover {
-      background: rgba(200, 169, 110, 0.07);
-    }
-
-    /* ── Sections shared ── */
-    section {
-      padding: 120px 48px;
-      max-width: 1080px;
-      margin: 0 auto;
-    }
-
-    /* ── Live Stats ── */
-    #live-stats {
-      padding: 80px 48px;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2px;
-    }
-
-    .stat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 40px 32px;
-      text-align: center;
-      transition: border-color 0.25s ease;
-    }
-
-    .stat-card:hover {
-      border-color: rgba(200, 169, 110, 0.35);
-    }
-
-    .stat-value {
-      font-size: clamp(36px, 4vw, 52px);
-      font-weight: 300;
-      color: var(--gold);
-      letter-spacing: -0.02em;
-      line-height: 1;
-      margin-bottom: 12px;
-    }
-
-    .stat-label {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text-sec);
-    }
-
-    /* ── Strategy Stack ── */
-    #strategies .strategy-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-    }
-
-    .strategy-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-left: 2px solid transparent;
-      padding: 32px 28px;
-      transition: border-left-color 0.25s ease, background 0.25s ease;
-    }
-
-    .strategy-card:hover {
-      border-left-color: var(--gold);
-      background: #111118;
-    }
-
-    .strategy-tag {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--gold);
-      opacity: 0.7;
-      margin-bottom: 10px;
-    }
-
-    .strategy-name {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text);
-      letter-spacing: 0.04em;
-      line-height: 1.4;
-    }
-
-    .strategy-dot {
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      background: #2ecc71;
-      border-radius: 50%;
-      margin-right: 8px;
-      box-shadow: 0 0 6px rgba(46, 204, 113, 0.6);
-      animation: pulse-dot 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-
-    /* ── Architecture ── */
-    #architecture .arch-headline {
-      font-size: clamp(24px, 3vw, 38px);
-      font-weight: 300;
-      color: var(--text);
-      margin-bottom: 72px;
-      max-width: 560px;
-    }
-
-    .arch-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .arch-item {
-      display: grid;
-      grid-template-columns: 80px 1fr;
-      gap: 0;
-      padding: 40px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .arch-item:first-child {
-      border-top: 1px solid var(--border);
-    }
-
-    .arch-num {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--gold);
-      letter-spacing: 0.05em;
-      padding-top: 2px;
-    }
-
-    .arch-content {}
-
-    .arch-title {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .arch-desc {
-      font-size: 14px;
-      font-weight: 300;
-      color: var(--text-sec);
-      line-height: 1.75;
-      max-width: 580px;
-    }
-
-    /* ── Technology ── */
-    #technology {
-      text-align: center;
-    }
-
-    #technology .tech-line {
-      font-size: 15px;
-      font-weight: 300;
-      color: var(--text-sec);
-      margin-bottom: 56px;
-    }
-
-    .tech-badges {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .tech-badge {
-      padding: 10px 22px;
-      border: 1px solid var(--border);
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-sec);
-      border-radius: 2px;
-      transition: border-color 0.2s, color 0.2s;
-    }
-
-    .tech-badge:hover {
-      border-color: rgba(200, 169, 110, 0.35);
-      color: var(--text);
-    }
-
-    .tech-badge.primary {
-      border-color: rgba(200, 169, 110, 0.4);
-      color: var(--gold);
-    }
-
-    /* ── Contact ── */
-    #contact {
-      text-align: center;
-      padding-bottom: 160px;
-    }
-
-    #contact .contact-headline {
-      font-size: clamp(24px, 3vw, 38px);
-      font-weight: 300;
-      color: var(--text);
-      margin-bottom: 12px;
-    }
-
-    #contact .contact-sub {
-      font-size: 14px;
-      color: var(--text-sec);
-      margin-bottom: 36px;
-    }
-
-    #contact .contact-email {
-      font-size: 18px;
-      font-weight: 300;
-      color: var(--gold);
-      letter-spacing: 0.04em;
-      text-decoration: none;
-      display: block;
-      margin-bottom: 64px;
-      transition: opacity 0.2s;
-    }
-
-    #contact .contact-email:hover {
-      opacity: 0.7;
-    }
-
-    .contact-form {
-      max-width: 480px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 36px;
-    }
-
-    .form-field {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .form-field label {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-sec);
-    }
-
-    .form-field input,
-    .form-field textarea {
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid var(--border);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      font-weight: 300;
-      padding: 10px 0;
-      outline: none;
-      transition: border-bottom-color 0.2s;
-      resize: none;
-    }
-
-    .form-field input:focus,
-    .form-field textarea:focus {
-      border-bottom-color: var(--gold);
-    }
-
-    .form-field input::placeholder,
-    .form-field textarea::placeholder {
-      color: var(--text-sec);
-      opacity: 0.5;
-    }
-
-    .form-submit {
-      margin-top: 8px;
-    }
-
-    /* ── Footer ── */
-    footer {
-      position: relative;
-      z-index: 1;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 24px 48px;
-    }
-
-    .footer-brand {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--text-sec);
-    }
-
-    .footer-copy {
-      font-size: 11px;
-      color: var(--text-sec);
-      letter-spacing: 0.05em;
-    }
-
-    /* ── Mobile ── */
-    @media (max-width: 768px) {
-      nav {
-        padding: 0 24px;
-      }
-
-      .nav-links {
-        display: none;
-      }
-
-      section {
-        padding: 80px 24px;
-      }
-
-      #hero {
-        padding: 100px 24px 80px;
-      }
-
-      #live-stats {
-        padding: 60px 24px;
-      }
-
-      .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      #strategies .strategy-grid {
-        grid-template-columns: 1fr;
-        gap: 1px;
-      }
-
-      .arch-item {
-        grid-template-columns: 60px 1fr;
-      }
-
-      footer {
-        padding: 20px 24px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .hero-headline {
-        font-size: 28px;
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      #strategies .strategy-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .tech-badges {
-        gap: 8px;
-      }
-    }
-
-    @media (min-width: 769px) and (max-width: 1024px) {
-      #strategies .strategy-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-  </style>
+    <meta charset="UTFUTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obsidian Labs - Autonomous Quantitative Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-bg: #0C0C10;
+            --mid-dark: #121218;
+            --light-text: #E0E0E0;
+            --mid-text: #A0A0A8;
+            --dark-text: #606070;
+            --accent-green: #76B900; /* NVIDIA Green */
+            --accent-border: #2A2A38;
+        }
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: var(--mid-dark);
+            padding: 20px 0;
+            border-bottom: 1px solid var(--accent-border);
+        }
+        header .logo {
+            font-size: 2.2em;
+            font-weight: 600;
+            text-align: center;
+        }
+        header .logo span:first-child {
+            color: var(--light-text);
+        }
+        header .logo span:last-child {
+            color: var(--accent-green);
+        }
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            background: linear-gradient(180deg, var(--mid-dark) 0%, var(--dark-bg) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+        .hero p {
+            font-size: 1.3em;
+            color: var(--mid-text);
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent-green);
+            color: var(--dark-bg);
+            padding: 15px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
+        .cta-button:hover {
+            background-color: #5b9200;
+        }
+        section {
+            padding: 80px 20px;
+            border-top: 1px solid var(--accent-border);
+        }
+        section h2 {
+            font-size: 2.5em;
+            color: var(--accent-green);
+            text-align: center;
+            margin-bottom: 60px;
+            font-weight: 600;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        .feature-item {
+            background-color: var(--mid-dark);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--accent-border);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .feature-item:hover {
+            transform: translateY(-5px);
+        }
+        .feature-item h3 {
+            color: var(--light-text);
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .feature-item p {
+            color: var(--mid-text);
+            font-size: 1em;
+        }
+        .architecture {
+            background-color: var(--mid-dark);
+            padding: 60px 20px;
+            border-top: 1px solid var(--accent-border);
+            text-align: center;
+        }
+        .architecture h2 {
+            margin-bottom: 40px;
+        }
+        .architecture-diagram {
+            width: 100%;
+            max-width: 1000px;
+            margin: 40px auto;
+            border: 1px solid var(--accent-border);
+            border-radius: 8px;
+            padding: 20px;
+            background-color: var(--dark-bg);
+            position: relative;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+        .arch-layer {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .arch-layer h3 {
+            color: var(--accent-green);
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .arch-components {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .arch-component {
+            background-color: var(--mid-dark);
+            color: var(--light-text);
+            padding: 15px 25px;
+            border-radius: 5px;
+            border: 1px solid var(--accent-border);
+            font-size: 0.9em;
+            flex-grow: 1;
+            max-width: 250px;
+            text-align: center;
+            position: relative;
+        }
+        .arrow {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 30px;
+            border-left: 2px dashed var(--mid-text);
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .arrow::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: -5px;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 8px solid var(--mid-text);
+        }
+        .results {
+            padding: 80px 20px;
+            text-align: center;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+        .stat-item {
+            background-color: var(--mid-dark);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--accent-border);
+        }
+        .stat-item .value {
+            font-size: 3em;
+            color: var(--accent-green);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .stat-item .label {
+            font-size: 1.2em;
+            color: var(--light-text);
+            font-weight: 400;
+        }
+        footer {
+            background-color: var(--mid-dark);
+            color: var(--dark-text);
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--accent-border);
+            font-size: 0.9em;
+        }
+        footer a {
+            color: var(--accent-green);
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            .hero p {
+                font-size: 1.1em;
+            }
+            section h2 {
+                font-size: 2em;
+            }
+            .arch-component {
+                max-width: 100%;
+            }
+            .two-col-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .two-col-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+        .col-item h3 {
+            color: var(--accent-green);
+            font-size: 1.6em;
+            margin-bottom: 15px;
+        }
+        .col-item ul {
+            list-style: none;
+            padding: 0;
+        }
+        .col-item li {
+            color: var(--mid-text);
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 20px;
+        }
+        .col-item li::before {
+            content: '>';
+            color: var(--accent-green);
+            position: absolute;
+            left: 0;
+        }
+    </style>
 </head>
 <body>
+    <header>
+        <div class="container">
+            <div class="logo"><span>OBSIDIAN</span><span>LABS</span></div>
+        </div>
+    </header>
 
-  <!-- Dot grid canvas -->
-  <canvas id="dot-grid"></canvas>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Autonomous Quantitative Intelligence</h1>
+                <p>Obsidian Labs develops and deploys advanced AI systems for systematic alpha generation across dynamic financial markets. We leverage real-time, multi-modal data and autonomous agent architectures to capture informational asymmetries at machine speed.</p>
+                <a href="#contact" class="cta-button">Engage With Us</a>
+            </div>
+        </section>
 
-  <!-- Nav -->
-  <nav id="nav">
-    <a class="nav-brand" href="#">
-      <svg width="24" height="28" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="20,2 38,14 32,42 8,42 2,14" fill="none" stroke="#c8a96e" stroke-width="1.5" stroke-linejoin="round"/>
-        <polygon points="20,2 2,14 8,42 20,28" fill="rgba(200,169,110,0.06)" stroke="#c8a96e" stroke-width="0.75" stroke-linejoin="round"/>
-        <polygon points="20,2 38,14 32,42 20,28" fill="rgba(200,169,110,0.12)" stroke="#c8a96e" stroke-width="0.75" stroke-linejoin="round"/>
-        <line x1="20" y1="2" x2="20" y2="28" stroke="#c8a96e" stroke-width="0.5" opacity="0.4"/>
-      </svg>
-      <span class="nav-wordmark">Obsidian</span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#strategies">Strategies</a></li>
-      <li><a href="#architecture">Architecture</a></li>
-      <li><a href="#technology">Technology</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+        <section id="thesis">
+            <div class="container">
+                <h2>INVESTMENT THESIS</h2>
+                <p style="font-size: 1.3em; color: var(--light-text); max-width: 900px; margin: 0 auto 30px; text-align: center;">
+                    Alpha generation in modern financial markets hinges on superior information processing, autonomous decision systems, and high-velocity execution. Traditional approaches are constrained by human-speed analysis and reliance on lagged, aggregated data streams.
+                </p>
+                <div class="two-col-grid">
+                    <div class="col-item">
+                        <h3>Traditional Limitations</h3>
+                        <ul>
+                            <li>Lagged, aggregated data streams and summary models</li>
+                            <li>Human-speed analysis and decision-making bottlenecks</li>
+                            <li>Single-model architectures prone to systemic biases</li>
+                            <li>Manual oversight and intervention at scale</li>
+                        </ul>
+                    </div>
+                    <div class="col-item">
+                        <h3>Our Differentiators</h3>
+                        <ul>
+                            <li>Raw, real-time primary data ingestion and causal inference</li>
+                            <li>Autonomous, AI-driven decision systems operating 24/7</li>
+                            <li>Multi-model ensemble intelligence for robust forecasting</li>
+                            <li>Continuous self-optimization and adaptive risk management</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <main>
+        <section class="architecture" id="architecture">
+            <div class="container">
+                <h2>PLATFORM ARCHITECTURE</h2>
+                <p style="font-size: 1.1em; color: var(--mid-text); max-width: 900px; margin: 0 auto 30px; text-align: center;">
+                    Our proprietary infrastructure integrates a multi-modal data fabric, advanced AI intelligence layers, and high-frequency execution capabilities within a robust, self-optimizing agent ecosystem.
+                </p>
+                <div class="architecture-diagram">
+                    <div class="arch-layer">
+                        <h3>Data Fabric</h3>
+                        <div class="arch-components">
+                            <div class="arch-component">Real-time Weather (NOAA ASOS)</div>
+                            <div class="arch-component">Satellite Imagery (Sentinel Hub)</div>
+                            <div class="arch-component">Global Maritime Data (AISstream)</div>
+                            <div class="arch-component">CME & CLOB Order Books</div>
+                            <div class="arch-component">Economic Indicators (BLS, BEA)</div>
+                        </div>
+                        <div class="arrow"></div>
+                    </div>
+                    <div class="arch-layer">
+                        <h3>Intelligence Layer</h3>
+                        <div class="arch-components">
+                            <div class="arch-component">Multi-model LLM Ensembles</div>
+                            <div class="arch-component">Proprietary ML Classifiers</div>
+                            <div class="arch-component">Causal Graph Inference</div>
+                            <div class="arch-component">Dynamic Bias Correction</div>
+                            <div class="arch-component">Signal Confidence Scoring</div>
+                        </div>
+                        <div class="arrow"></div>
+                    </div>
+                    <div class="arch-layer">
+                        <h3>Autonomous Execution</h3>
+                        <div class="arch-components">
+                            <div class="arch-component">Low-Latency Limit Orders</div>
+                            <div class="arch-component">Cross-Platform Arbitrage Engines</div>
+                            <div class="arch-component">Adaptive Position Sizing</div>
+                            <div class="arch-component">Automated Stop-Loss Systems</div>
+                            <div class="arch-component">Self-Optimizing Strategy Deployment</div>
+                        </div>
+                    </div>
+                    <p style="color: var(--dark-text); font-size: 0.8em; margin-top: 40px;">Obsidian Autonomous Agent Ecosystem: 15+ specialized AI agents operating 24/7 with a dedicated auditing layer.</p>
+                </div>
+            </div>
+        </section>
 
-    <!-- Hero -->
-    <section id="hero">
-      <div class="reveal">
-        <div class="hero-logo">
-          <svg width="28" height="32" viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="20,2 38,14 32,42 8,42 2,14" fill="none" stroke="#c8a96e" stroke-width="1.5" stroke-linejoin="round"/>
-            <polygon points="20,2 2,14 8,42 20,28" fill="rgba(200,169,110,0.06)" stroke="#c8a96e" stroke-width="0.75" stroke-linejoin="round"/>
-            <polygon points="20,2 38,14 32,42 20,28" fill="rgba(200,169,110,0.12)" stroke="#c8a96e" stroke-width="0.75" stroke-linejoin="round"/>
-            <line x1="20" y1="2" x2="20" y2="28" stroke="#c8a96e" stroke-width="0.5" opacity="0.4"/>
-          </svg>
-          <span class="hero-wordmark">Obsidian</span>
-        </div>
-        <div class="hero-rule"></div>
-        <h1 class="hero-headline">AI-powered prediction market hedge fund.</h1>
-        <p class="hero-sub"><strong>11 autonomous strategies</strong> running 24/7. Finding the outcomes the crowd has mispriced — and trading that gap.</p>
-        <a href="#contact" class="btn-outline">— Request Access —</a>
-      </div>
-    </section>
+        <section id="competencies">
+            <div class="container">
+                <h2>CORE COMPETENCIES</h2>
+                <p style="font-size: 1.1em; color: var(--mid-text); max-width: 900px; margin: 0 auto 30px; text-align: center;">
+                    Obsidian Labs is engineered to excel in high-alpha domains through advanced AI and quantitative methodologies.
+                </p>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h3>Statistical Arbitrage</h3>
+                        <p>Identifying and exploiting temporary divergences between highly correlated instruments across diverse platforms and geographies.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Alternative Data Intelligence</h3>
+                        <p>Capitalizing on latency between raw data availability and its full integration into market pricing using proprietary primary source feeds.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Structured Products</h3>
+                        <p>Capturing structural mispricings in complex multi-outcome markets, combinatorial instruments, and derivatives.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Event-Driven Alpha</h3>
+                        <p>Probabilistic forecasting and systematic trading of discrete events, including economic releases, geopolitical shifts, and corporate actions.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Adaptive Risk Management</h3>
+                        <p>Dynamic position sizing, automated stop-losses, portfolio concentration controls, and strategy lifecycle management operating at machine speed.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Self-Improving Systems</h3>
+                        <p>Autonomous feedback loops where every outcome triggers root cause analysis, rule updates, backtesting, and redeployment without human intervention.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <!-- Live Stats -->
-    <section id="live-stats">
-      <div class="stats-grid">
-        <div class="stat-card reveal">
-          <div class="stat-value">11</div>
-          <div class="stat-label">Strategies Running</div>
-        </div>
-        <div class="stat-card reveal">
-          <div class="stat-value">50+</div>
-          <div class="stat-label">Trades Executed</div>
-        </div>
-        <div class="stat-card reveal">
-          <div class="stat-value">96%</div>
-          <div class="stat-label">Win Rate</div>
-        </div>
-        <div class="stat-card reveal">
-          <div class="stat-value">$200+</div>
-          <div class="stat-label">Capital Deployed</div>
-        </div>
-      </div>
-    </section>
+        <section id="nvidia">
+            <div class="container">
+                <h2>NVIDIA-ACCELERATED INTELLIGENCE</h2>
+                <p style="font-size: 1.1em; color: var(--mid-text); max-width: 900px; margin: 0 auto 30px; text-align: center;">
+                    Our core AI infrastructure is purpose-built for NVIDIA’s accelerated computing platform, enabling unparalleled speed and scale for institutional-grade quantitative operations.
+                </p>
+                <div class="two-col-grid">
+                    <div class="col-item">
+                        <h3>Core Workloads</h3>
+                        <ul>
+                            <li>LLM Ensemble Inference for real-time probability estimation</li>
+                            <li>High-Fidelity ML Classifiers for signal detection and forecasting</li>
+                            <li>GPU-Optimized Data Pipelines for multi-modal alternative data</li>
+                        </ul>
+                    </div>
+                    <div class="col-item">
+                        <h3>Roadmap Integration</h3>
+                        <ul>
+                            <li>NVIDIA NIM: Deploy optimized inference microservices for model serving</li>
+                            <li>TensorRT: Compile and optimize proprietary ML models for max performance</li>
+                            <li>DGX Cloud: Scalable deep learning model training and hyperparameter optimization</li>
+                            <li>RAPIDS: GPU-accelerated libraries for data science and analytics on streaming data</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <!-- Strategy Stack -->
-    <section id="strategies">
-      <p class="section-label reveal">— Strategy Stack —</p>
-      <div class="strategy-grid">
-        <div class="strategy-card reveal">
-          <div class="strategy-tag">Near-Certainty</div>
-          <div class="strategy-name"><span class="strategy-dot"></span>Near-Certainty Scanner</div>
-        </div>
-        <div class="strategy-card reveal">
-          <div class="strategy-tag">Wallet Mirroring</div>
-          <div class="strategy-name"><span class="strategy-dot"></span>APEX Wallet Mirror <span style="color:var(--text-sec);font-size:11px;">35 wallets</span></div>
-        </div>
-        <div class="strategy-card reveal">
-          <div class="strategy-tag">Arbitrage</div>
-          <div class="strategy-name"><span class="strategy-dot"></span>Kalshi Combos Arb</div>
-        </div>
-        <div class="strategy-card reveal">
-          <div class="strategy-tag">Arbitrage</div>
-          <div class="strategy-name"><span class="strategy-dot"></span>Thematic Cluster Arb</div>
-        </div>
-        <div class="strategy-card reveal">
-          <div class="strategy-tag">Bias Exploit</div>
-          <div class="strategy-name"><span class="strategy-dot"></span>Polymarket Bias <span style="color:var(--text-sec);font-size:11px;">Longshot NO</span></div>
-        </div>
-        <div class="strategy-card reveal">
-          <div class="strategy-tag">Market Making</div>
-          <div class="strategy-name"><span class="strategy-dot"></span>Market Maker</div>
-        </div>
-        <div class="strategy-card reveal">
-          <div class="strategy-tag">Event-Driven</div>
-          <div class="strategy-name"><span class="strategy-dot"></span>NBA Injury Scanner</div>
-        </div>
-        <div class="strategy-card reveal">
-          <div class="strategy-tag">Statistical</div>
-          <div class="strategy-name"><span class="strategy-dot"></span>Pairs Trading</div>
-        </div>
-        <div class="strategy-card reveal">
-          <div class="strategy-tag">Statistical</div>
-          <div class="strategy-name"><span class="strategy-dot"></span>Mean Reversion</div>
-        </div>
-        <div class="strategy-card reveal">
-          <div class="strategy-tag">Composite</div>
-          <div class="strategy-name"><span class="strategy-dot"></span>Alpha Combo</div>
-        </div>
-        <div class="strategy-card reveal">
-          <div class="strategy-tag">Esports</div>
-          <div class="strategy-name"><span class="strategy-dot"></span>Dota2 Esports</div>
-        </div>
-      </div>
-    </section>
+        <section id="performance">
+            <div class="container">
+                <h2>LIVE PERFORMANCE</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="value">85.4%</div>
+                        <div class="label">Win Rate (Resolved)</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="value">+31.1%</div>
+                        <div class="label">Return on Capital</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="value">11</div>
+                        <div class="label">Live Strategies</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="value">41</div>
+                        <div class="label">Resolved Trades</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="value">15+</div>
+                        <div class="label">Autonomous Agents</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="value">24/7</div>
+                        <div class="label">Autonomous Uptime</div>
+                    </div>
+                </div>
+                <p style="color: var(--dark-text); font-size: 0.9em; margin-top: 40px; text-align: center;">
+                    All figures from live production trading. System operates fully autonomously with human oversight for strategic capital allocation.
+                </p>
+            </div>
+        </section>
+    </main>
 
-    <!-- Architecture -->
-    <section id="architecture">
-      <p class="section-label reveal">— Architecture —</p>
-      <h2 class="arch-headline reveal">A system that improves with every resolved market.</h2>
-      <ol class="arch-list">
-        <li class="arch-item reveal">
-          <span class="arch-num">01</span>
-          <div class="arch-content">
-            <div class="arch-title">Causal Signal Sourcing</div>
-            <p class="arch-desc">We start at the oracle — the exact data source that resolves each market — and work backwards to the causal inputs. Raw station data over summaries. Physics over forecasts.</p>
-          </div>
-        </li>
-        <li class="arch-item reveal">
-          <span class="arch-num">02</span>
-          <div class="arch-content">
-            <div class="arch-title">Autonomous Execution</div>
-            <p class="arch-desc">Strategies run continuously. Agents enter positions when thresholds are crossed, manage risk, and redeploy capital without human intervention.</p>
-          </div>
-        </li>
-        <li class="arch-item reveal">
-          <span class="arch-num">03</span>
-          <div class="arch-content">
-            <div class="arch-title">Self-Improving Loop</div>
-            <p class="arch-desc">Every resolved market feeds back into the system. Parameters update, edge is re-measured, and underperforming strategies are flagged for replacement.</p>
-          </div>
-        </li>
-        <li class="arch-item reveal">
-          <span class="arch-num">04</span>
-          <div class="arch-content">
-            <div class="arch-title">Multi-Market Coverage</div>
-            <p class="arch-desc">Polymarket, Kalshi, and esports books. Sports, finance, geopolitics, weather — anywhere the crowd misprices structured outcomes.</p>
-          </div>
-        </li>
-      </ol>
-    </section>
-
-    <!-- Technology -->
-    <section id="technology">
-      <p class="section-label reveal">— Technology —</p>
-      <p class="tech-line reveal">Built on frontier AI infrastructure, running continuously.</p>
-      <div class="tech-badges reveal">
-        <span class="tech-badge primary">Claude Sonnet 4.6</span>
-        <span class="tech-badge primary">Gemini Flash</span>
-        <span class="tech-badge primary">OpenClaw</span>
-        <span class="tech-badge">Polymarket API</span>
-        <span class="tech-badge">Kalshi API</span>
-        <span class="tech-badge">Autonomous Agents</span>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact">
-      <p class="section-label reveal">— Contact —</p>
-      <h2 class="contact-headline reveal">We work with a small number of partners.</h2>
-      <p class="contact-sub reveal">Institutional inquiries only.</p>
-      <a href="mailto:admin@obsidianventures.xyz" class="contact-email reveal">admin@obsidianventures.xyz</a>
-      <form class="contact-form reveal" onsubmit="return false;">
-        <div class="form-field">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" placeholder="Full name" autocomplete="off" />
+    <footer>
+        <div class="container">
+            <p><strong>Obsidian Labs</strong> | Autonomous Quantitative Intelligence</p>
+            <p>admin@obsidianventures.xyz | <a href="https://obsidianventures.xyz">obsidianventures.xyz</a></p>
+            <p>&copy; 2026 Obsidian Labs. All rights reserved. | Built on NVIDIA GPU-Accelerated Compute</p>
         </div>
-        <div class="form-field">
-          <label for="org">Organisation</label>
-          <input type="text" id="org" name="org" placeholder="Institution or firm" autocomplete="off" />
-        </div>
-        <div class="form-field">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" placeholder="name@institution.com" autocomplete="off" />
-        </div>
-        <div class="form-field">
-          <label for="message">Inquiry</label>
-          <textarea id="message" name="message" rows="4" placeholder="Describe your requirements"></textarea>
-        </div>
-        <div class="form-submit">
-          <button type="submit" class="btn-outline">— Submit —</button>
-        </div>
-      </form>
-    </section>
-
-  </main>
-
-  <!-- Footer -->
-  <footer>
-    <span class="footer-brand">Obsidian Ventures</span>
-    <span class="footer-copy">© 2026</span>
-  </footer>
-
-  <script>
-    // ── Dot grid canvas ──────────────────────────────────────────
-    (function () {
-      const canvas = document.getElementById('dot-grid');
-      const ctx = canvas.getContext('2d');
-      const SPACING = 36;
-      const BASE_ALPHA = 0.10;
-      const PULSE_ALPHA = 0.32;
-      const PULSE_SPEED = 0.0004;
-      let dots = [];
-      let W, H;
-
-      function resize() {
-        W = canvas.width = window.innerWidth;
-        H = canvas.height = window.innerHeight;
-        buildDots();
-      }
-
-      function buildDots() {
-        dots = [];
-        const cols = Math.ceil(W / SPACING) + 1;
-        const rows = Math.ceil(H / SPACING) + 1;
-        for (let r = 0; r < rows; r++) {
-          for (let c = 0; c < cols; c++) {
-            // Only a sparse fraction of dots pulse
-            dots.push({
-              x: c * SPACING,
-              y: r * SPACING,
-              pulse: Math.random() < 0.06,
-              phase: Math.random() * Math.PI * 2,
-              speed: 0.3 + Math.random() * 0.7
-            });
-          }
-        }
-      }
-
-      function draw(ts) {
-        ctx.clearRect(0, 0, W, H);
-        for (const d of dots) {
-          let alpha = BASE_ALPHA;
-          if (d.pulse) {
-            const sin = Math.sin(ts * PULSE_SPEED * d.speed + d.phase);
-            alpha = BASE_ALPHA + (sin * 0.5 + 0.5) * (PULSE_ALPHA - BASE_ALPHA);
-          }
-          ctx.beginPath();
-          ctx.arc(d.x, d.y, 0.9, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(200,169,110,${alpha})`;
-          ctx.fill();
-        }
-        requestAnimationFrame(draw);
-      }
-
-      window.addEventListener('resize', resize);
-      resize();
-      requestAnimationFrame(draw);
-    })();
-
-    // ── Nav scroll border ────────────────────────────────────────
-    (function () {
-      const nav = document.getElementById('nav');
-      window.addEventListener('scroll', function () {
-        if (window.scrollY > 20) {
-          nav.classList.add('scrolled');
-        } else {
-          nav.classList.remove('scrolled');
-        }
-      }, { passive: true });
-    })();
-
-    // ── Scroll reveal ────────────────────────────────────────────
-    (function () {
-      const els = document.querySelectorAll('.reveal');
-      const io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) {
-            e.target.classList.add('visible');
-            io.unobserve(e.target);
-          }
-        });
-      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
-      els.forEach(function (el) { io.observe(el); });
-    })();
-  </script>
-
-  <!-- Cloudflare Web Analytics -->
-  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "PLACEHOLDER_TOKEN"}'></script>
+    </footer>
 </body>
 </html>
